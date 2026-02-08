@@ -1,4 +1,4 @@
-"""にゃんDoリスト - ブラウザ版"""
+"""わんDoリスト - ブラウザ版"""
 
 import json
 import re
@@ -23,18 +23,18 @@ def save_todos(todos):
     TODO_FILE.write_text(json.dumps(todos, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-def to_neko(text):
-    """テキストを猫語に変換するニャ"""
+def to_inu(text):
+    """テキストを犬語に変換するワン"""
     result = text
-    result = re.sub(r'です', 'ですニャ', result)
-    result = re.sub(r'ます', 'ますニャ', result)
-    result = re.sub(r'した', 'したニャ', result)
-    result = re.sub(r'ない', 'ニャい', result)
-    result = re.sub(r'ある', 'あるニャ', result)
-    result = re.sub(r'する', 'するニャ', result)
-    result = re.sub(r'だ([。！\s]|$)', r'だニャ\1', result)
-    if 'ニャ' not in result:
-        result = result + ' ニャー'
+    result = re.sub(r'です', 'ですワン', result)
+    result = re.sub(r'ます', 'ますワン', result)
+    result = re.sub(r'した', 'したワン', result)
+    result = re.sub(r'ない', 'ワンい', result)
+    result = re.sub(r'ある', 'あるワン', result)
+    result = re.sub(r'する', 'するワン', result)
+    result = re.sub(r'だ([。！\s]|$)', r'だワン\1', result)
+    if 'ワン' not in result:
+        result = result + ' ワンワン'
     return result
 
 
@@ -43,34 +43,34 @@ def to_neko(text):
 def render_page(todos):
     rows = ""
     for task in todos:
-        neko_title = to_neko(task["title"])
+        inu_title = to_inu(task["title"])
         done_class = "done" if task["done"] else ""
         check_btn = "" if task["done"] else f'''
             <form method="post" action="/done/{task['id']}" style="display:inline">
-                <button type="submit" class="btn btn-done" title="完了ニャ">✅</button>
+                <button type="submit" class="btn btn-done" title="完了ワン">✅</button>
             </form>'''
         rows += f'''
         <tr class="{done_class}">
             <td class="id">{task['id']}</td>
-            <td class="title">{neko_title}</td>
-            <td class="status">{"😸 済ニャ！" if task["done"] else "🐱 まだニャ"}</td>
+            <td class="title">{inu_title}</td>
+            <td class="status">{"🐶 済ワン！" if task["done"] else "🐕 まだワン"}</td>
             <td class="actions">
                 {check_btn}
                 <form method="post" action="/delete/{task['id']}" style="display:inline">
-                    <button type="submit" class="btn btn-delete" title="削除ニャ">🗑️</button>
+                    <button type="submit" class="btn btn-delete" title="削除ワン">🗑️</button>
                 </form>
             </td>
         </tr>'''
 
     if not todos:
-        rows = '<tr><td colspan="4" class="empty">タスクはニャいニャー！暇だニャ～ 🐈</td></tr>'
+        rows = '<tr><td colspan="4" class="empty">タスクはワンい！暇だワン～ 🐕</td></tr>'
 
     return f'''<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🐱 にゃんDoリスト</title>
+    <title>🐶 わんDoリスト</title>
     <style>
         * {{ margin: 0; padding: 0; box-sizing: border-box; }}
         body {{
@@ -176,12 +176,12 @@ def render_page(todos):
 </head>
 <body>
     <div class="container">
-        <h1>🐱 にゃんDoリスト</h1>
-        <p class="subtitle">タスクは全部猫語で表示されるニャ！</p>
+        <h1>🐶 わんDoリスト</h1>
+        <p class="subtitle">タスクは全部犬語で表示されるワン！</p>
 
         <form class="add-form" method="post" action="/add">
-            <input type="text" name="title" placeholder="新しいタスクを入力するニャ..." required autofocus>
-            <button type="submit">追加ニャ！</button>
+            <input type="text" name="title" placeholder="新しいタスクを入力するワン..." required autofocus>
+            <button type="submit">追加ワン！</button>
         </form>
 
         <table>
@@ -193,7 +193,7 @@ def render_page(todos):
             </tbody>
         </table>
 
-        <p class="footer">にゃー！以上ニャ！ 🐾</p>
+        <p class="footer">ワンワン！以上ワン！ 🐾</p>
     </div>
 </body>
 </html>'''
@@ -251,13 +251,13 @@ def cli_main():
     elif command == "list":
         todos = load_todos()
         if not todos:
-            print("タスクはニャいニャー！暇だニャ～")
+            print("タスクはワンい！暇だワン～")
             return
-        print("\n--- にゃんDoリスト ---")
+        print("\n--- わんDoリスト ---")
         for task in todos:
-            status = "[済ニャ]" if task["done"] else "[ ]"
-            print(f"  {task['id']}. {status} {to_neko(task['title'])}")
-        print("  にゃー！以上ニャ！\n")
+            status = "[済ワン]" if task["done"] else "[ ]"
+            print(f"  {task['id']}. {status} {to_inu(task['title'])}")
+        print("  ワンワン！以上ワン！\n")
     else:
         print("使い方: python todo.py [web|add|list]")
         print("  web   … ブラウザ版を起動")
@@ -267,10 +267,10 @@ def cli_main():
 
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "web":
-        print("🐱 にゃんDoリストを起動中… http://localhost:5000")
+        print("🐶 わんDoリストを起動中… http://localhost:5000")
         app.run(debug=True, port=5000)
     elif len(sys.argv) > 1:
         cli_main()
     else:
-        print("🐱 にゃんDoリストを起動中… http://localhost:5000")
+        print("🐶 わんDoリストを起動中… http://localhost:5000")
         app.run(debug=True, port=5000)
